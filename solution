@@ -1,0 +1,108 @@
+//question 1
+fetch('https://momentjs.com/downloads/moment.min.js')
+.then(response => response.text())
+.then(text => eval(text))
+var table=document.getElementsByTagName("table")[0]
+rows=table.rows
+shiftHrs=[]
+start='00:00'
+end='24:00'
+totalhrs={}
+var col=1
+while(col<=8){
+start='00:00'
+end='24:00'
+c=0
+var i = 3
+while(i<rows.length){
+console.log(col)
+var td=rows[i].getElementsByTagName('td')[0]
+if(rows[i].getElementsByTagName('td')[col]){
+if(td.innerHTML===`Start Shift` && rows[i].getElementsByTagName('td')[col].innerHTML!=="")
+{
+val= rows[i].getElementsByTagName('td')[col].innerHTML
+if(rows[i+1].getElementsByTagName('td')[col].innerHTML!=="")
+{
+end=rows[i+1].getElementsByTagName('td')[col].innerHTML
+i++
+}
+console.log(val)
+start=val
+}
+if(td.innerHTML===`End Shift` && rows[i].getElementsByTagName('td')[col].innerHTML!=="")
+{
+val= rows[i].getElementsByTagName('td')[col].innerHTML
+console.log(val)
+end=val
+}
+if(rows[i].getElementsByTagName('td')[col].innerHTML!=="")
+{
+var a = moment(end, 'HH:mm');
+var b = moment(start, 'HH:mm');
+console.log(start,end)
+c=a.diff(b, 'hours', true)
+colname=rows[0].getElementsByTagName('td')[col].innerHTML
+if(`${colname}`in totalhrs)
+{
+existval=totalhrs[colname]
+totalhrs[colname]=existval+c
+}
+else{
+totalhrs[colname]=c
+}
+}
+}i++;
+}col++
+}console.log(totalhrs)
+
+
+//question2
+fetch('https://momentjs.com/downloads/moment.min.js')
+.then(response => response.text())
+.then(text => eval(text))
+var table=document.getElementsByTagName("table")[2]
+rows=table.rows
+shiftHrs=[]
+start='00:00'
+end='24:00'
+var col=1
+var i = 1
+totalhrs={}
+while(i<rows.length){
+start='00:00'
+end='24:00'
+c=0console.log(col)
+var td=rows[i].getElementsByTagName('td')[2]
+if(td.innerHTML===`Start`)
+{
+val= rows[i].getElementsByTagName('td')[col].innerHTML
+if(rows[i].getElementsByTagName('td')[0].innerHTML===rows[i+1].getElementsByTagName('td')[0].innerHTML)
+{
+end=rows[i+1].getElementsByTagName('td')[col].innerHTML
+i++
+}
+console.log(val)
+start=val
+}
+if(td.innerHTML===`End`)
+{
+val= rows[i].getElementsByTagName('td')[col].innerHTML
+console.log(val)
+end=val
+}
+var a = moment(end, 'HH:mm');
+var b = moment(start, 'HH:mm');
+console.log(start,end)
+c=a.diff(b, 'hours', true)
+colname=rows[i].getElementsByTagName('td')[0].innerHTML
+if(`${colname}`in totalhrs)
+{
+existval=totalhrs[colname]
+totalhrs[colname]=existval+c
+}
+else{
+totalhrs[colname]=c
+}i++;
+}
+console.log(totalhrs)
+
